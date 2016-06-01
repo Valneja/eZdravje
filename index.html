@@ -12,16 +12,20 @@
   <script src="knjiznice/js/bootstrap.min.js"></script>
   <script src="knjiznice/js/koda.js"></script>
   <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places"></script>
+      <!-- Loading Styles -->
+    <link href="bootflat/css/bootflat.css" rel="stylesheet">
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet" type="text/css">
+    <link href="css/font-awesome.css" rel="stylesheet">
+
+    <link href="css/morris.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
   <style>
 			body {padding: 20px;}
 			.btn {margin-top: 10px;}
 			.obvestilo {margin-left:10px;}
 			.majhna-ikona {font-size:60%; margin-left:10px}
-			#map {
-        height: 100%;
-      }
-      .map{margin-left: 20px;margin-top :20px;}
-		</style>
+	
+	</style>
 </head>
 <body>
 
@@ -41,7 +45,7 @@
         <ul class="nav navbar-nav">
           <li><a href="opis.html">Opis ideje</a></li>
           <li><a href="nacrt.html">Načrt informacijske rešitve</a></li>
-          <li><a href="#">Generiranje podatkov</a></li>
+          <li><a href="#" onclick="kreirajEHRzaBolnika()">Generiranje podatkov</a></li>
         </ul>
       </div>
     </div>
@@ -49,91 +53,183 @@
   <!-- KONEC: Menujska vrstica na vrhu spletne strani -->
 
   <!-- ZAČETEK: Vsebina aplikacije -->
-<div class="page-header"><h2>Vnos in poizvedovanje po EHR podatkih <small>EhrScape platforma</small><a href="dokumentacija/index.html"><span class="majhna-ikona glyphicon glyphicon-question-sign"></span></a></h2></div>
-	<div class="row">
-			<div class="col-lg-6 col-md-6 col-sm-6">
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						<div class="row">
-							<div class="col-lg-8 col-md-8 col-sm-8"><b>Kreiraj EHR zapis</b> za novega bolnika</div>
-							<div class="col-lg-4 col-md-4 col-sm-4"><select class="form-control input-sm" id="preberiPredlogoBolnika"><option value=""></option><option value="Pujsa,Pepa,1938-10-30T14:58">Pujsa Pepa</option></select></div>
-						</div>
-					</div>
-					<div class="panel-body">
-						<span class="label label-default">Ime</span><input id="kreirajIme" type="text" class="form-control input-mini" placeholder="Osama">
-						<span class="label label-default">Priimek</span><input id="kreirajPriimek" type="text" class="form-control" placeholder="Bin Laden">
-						<span class="label label-default">Datum rojstva</span><input id="kreirajDatumRojstva" type="text" class="form-control" placeholder="1957-03-10T09:08">
-						<button type="button" class="btn btn-primary btn-xs" onclick="kreirajEHRzaBolnika()">Dodaj osnovne podatke o bolniku</button><span id="kreirajSporocilo"></span>
-				  </div>
-				</div>
-  		</div>
-  		
-  	</div>
-		<div class="row">
-			<div class="col-lg-6 col-md-6 col-sm-6">
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						<div class="row">
-							<div class="col-lg-8 col-md-8 col-sm-8"><b>Preberi EHR zapis</b> obstoječega bolnika</div>
-							<div class="col-lg-4 col-md-4 col-sm-4"><select class="form-control input-sm" id="preberiObstojeciEHR"><option value=""></option><option value="254f791d-2e7c-49d9-b646-376f62d6ead5">Dejan Lavbič</option><option value="d564c6a3-5a43-4fcc-bfa7-9ac76e9673bd">Pujsa Pepa</option><option value="b931580f-2b05-488b-985b-8d9ffb08ad02">Ata Smrk</option></select></div>
-						</div>
-					</div>
-					<div class="panel-body">
-						<span class="label label-default">EHR ID</span><input id="preberiEHRid" type="text" class="form-control input-mini" placeholder="7b661e12-3a98-21ad-c29e-2dc9f5a3d885">
-						<button type="button" class="btn btn-primary btn-xs" onclick="preberiEHRodBolnika()">Preberi osnovne podatke o bolniku</button><span id="preberiSporocilo"></span>
-				  </div>
-  			</div>
-			</div>
-		</div>
-		<div class="row">
-		  
-		  <script>
-          var map;
-          function initMap() {
-            /*global google*/
-            map = new google.maps.Map(document.getElementById('map'), {
-              center: {lat: -34.397, lng: 150.644},
-              zoom: 13,
-             });
-             var infoWindow = new google.maps.InfoWindow({map: map});
-
-              // Try HTML5 geolocation.
-              if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(function(position) {
-                  var pos = {
-                    lat: position.coords.latitude,
-                    lng: position.coords.longitude
-                  };
+<div class="page-header"><h2>Dnevnik fizične aktivnosti <small>EhrScape platforma</small><a href="dokumentacija/index.html"></a></h2></div>
+	<div class="container" style="margin-top: 50px;">
+	  
+    <div class="row">
       
-                  infoWindow.setPosition(pos);
-                  infoWindow.setContent('Location found.');
-                  map.setCenter(pos);
-                }, function() {
-                  handleLocationError(true, infoWindow, map.getCenter());
-                });
-              } else {
-                // Browser doesn't support Geolocation
-                handleLocationError(false, infoWindow, map.getCenter());
-              }
-            }
+        <div class="col-md-6">
+          <div class="panel panel-success">
+          <div class="row"  style="margin: 20px;">
+						<div class="col-lg-4 col-md-4 col-sm-4"><b>Izberi osebo</b></div>
+						<div class="col-lg-8 col-md-8 col-sm-8">
+					    <select class="form-control input-sm" id="preberiPredlogoBolnika">
+						    <option value=""></option>
+						    <option value="Regina,Phalange,1983-10-26T15:38,3694667a-4809-4cbe-b90a-7b9bc7912df6">Regina Phalange</option>
+					      <option value="Ken,Adams,1982-2-6T11:10,2cea2893-0baa-4b06-8c45-0a994995e808">Ken Adams</option>
+					      <option value="Chanandler,Bong,1981-11-21T16:44,a0dd531b-4502-48a1-a8cc-1f4274196faa">Chanandler Bong</option>
+				      </select>
+			      </div>
+			     </div>
+			     <div class="row"  style="margin: 20px;">
+			      <div class="col-lg-4 col-md-4 col-sm-4"><b>Vpiši EHR zapis</b> za novega bolnika</div>
+			      <div class="col-sm-8">
+					      </span><input id="preberiEHRid" type="text" class="form-control input-mini" placeholder="b7b0f8cb-f972-4a12-aa2c-96cb9ca97e50">
+					  </div>
+				  </div>
+			     <div class="row"  style="margin: 20px;">
+					 <div class="col-lg-4 col-md-4 col-sm-4">
+			        <button type="button" class="btn btn-success  btn-s" style="margin: 1px;">Prikaži podatke</button><span id="kreirajSporocilo"></span>
+			     </div>
+			     </div>
+					</div>
+            <div class="well demographics" style="position: relative">
+                
+                <div class="row">
+                    
+                    <div class="col-md-6">
+                        <div class="patient-info">
+                            <h4 id="patient-name"></h4>
+                            <p>Ime: <input id="kreirajIme" type="text" class="form-control input-mini" readonly></p>
+                            <p>Priimek: <input id="kreirajPriimek" type="text" class="form-control input-mini" readonly></p>
+                            <p>Datum rojstva: <input id="kreirajDatumRojstva" type="text" class="form-control input-mini" readonly></p>
+                            
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="ver-spacer left">
+                            <div class="mask"></div>
+                        </div>
+                       
+                    </div>
+                </div>
+            </div>
+            
+            <div class="patient-stats well" style="position: relative">
+                <div class="row">
+                    <div class="col-md-8 bordered">
+                        <div class="row" style="min-height: 57px;">
+                            <div class="col-md-4 bordered centered" style="min-height: 67px;">
+                                <p>Age:</p>
+                                <div class="value patient-age-years"></div>
+                            </div>
+                            <div class="col-md-4 bordered centered" style="min-height: 67px;">
+                                <p>Weight:</p>
+                                <div class="value">
+                                    <span class="weight-placeholder-value"></span> <span class="weight-placeholder-unit"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-4 centered">
+                                <p>BMI:</p>
+                                <div class="value patient-bmi"></div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                            <p>Blood Pressure:</p>
+                                            <div class="value last-bp"></div>
+                                    </div>
+                                    <div class="col-md-4 centered">
+                                        <div class="progress">
+                                            <div class="progress-bar" style="width: 40%;"></div>
+                                        </div>
+                                        <p>(Systolic)</p>
+                                    </div>
+                                    <div class="col-md-4 centered">
+                                        <div class="progress">
+                                            <div class="progress-bar" style="width: 50%;"></div>
+                                        </div>
+                                        <p>(Diastolic)</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                            <p>Oxygen Saturation:</p>
+                                            <div class="value last-spo2"></div>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="progress">
+                                            <div class="progress-bar progress-bar-success bar-spo2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                            <div class="patient-height-stats">
+                                <p>Height:</p>
+                                <div class="value">
+                                    <span class="height-placeholder-value"></span> <span class="height-placeholder-unit"></span>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+            </div>
+            
+            
+        </div>
       
-            function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-              infoWindow.setPosition(pos);
-              infoWindow.setContent(browserHasGeolocation ?
-                                    'Error: The Geolocation service failed.' :
-                                    'Error: Your browser doesn\'t support geolocation.');
-            }
-           
-          
-        </script>
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBBIFOFXzEUI530KfxIi3PohkPDVBW2AuQ&callback=initMap"
-        async defer></script> 
-      <div id="map" style="width: 50%; height: 50%; position: absolute; margin-left: 20px;margin-top :20px; margin-bottom: 20px; bordered">
-  		 <div id="map"></div>
-  		 </div>
+            <div class="col-lg-6 col-md-6 col-sm-6">
+    				<div class="panel panel-default">
+    					<div class="panel-heading">
+    						<div class="row">
+    							<div class="col-lg-8 col-md-8 col-sm-8"><b>Vnos</b> meritve <b>vitalnih znakov</b> bolnika</div>
+    							<div class="col-lg-4 col-md-4 col-sm-4"><select class="form-control input-sm" id="preberiObstojeciVitalniZnak"><option value=""></option><option value="b931580f-2b05-488b-985b-8d9ffb08ad02|2014-11-21T11:40Z|185|80.0|36.50|118|92|98|medicinska sestra Smrketa">Ata Smrk</option></select></div>
+    						</div>
+    					</div>
+    					<div class="panel-body">
+    						<span class="label label-default">EHR ID</span><input id="dodajVitalnoEHR" type="text" class="form-control input-mini" placeholder="7b661e12-3a98-21ad-c29e-2dc9f5a3d885">
+    						<span class="label label-default">Datum in ura</span><input id="dodajVitalnoDatumInUra" type="text" class="form-control input-mini" placeholder="2014-11-21T11:40Z">
+    						<span class="label label-default">Telesna višina</span><div class="input-group"><input id="dodajVitalnoTelesnaVisina" type="text" class="form-control input-mini" placeholder="185"><span class="input-group-addon">cm</span></div>
+    						<span class="label label-default">Telesna teža</span><div class="input-group"><input id="dodajVitalnoTelesnaTeza" type="text" class="form-control input-mini" placeholder="80.00"><span class="input-group-addon">kg</span></div>
+    						<span class="label label-default">Telesna temperatura</span><div class="input-group"><input id="dodajVitalnoTelesnaTemperatura" type="text" class="form-control input-mini" placeholder="36.50"><span class="input-group-addon">°C</span></div>
+    						<span class="label label-default">Sistolični krvni tlak</span><div class="input-group"><input id="dodajVitalnoKrvniTlakSistolicni" type="text" class="form-control input-mini" placeholder="118"><span class="input-group-addon">mm Hg</span></div>
+    						<span class="label label-default">Diastolični krvni tlak</span><div class="input-group"><input id="dodajVitalnoKrvniTlakDiastolicni" type="text" class="form-control input-mini" placeholder="92"><span class="input-group-addon">mm Hg</span></div>
+    						<button type="button" class="btn btn-success btn-s" onclick="dodajMeritveVitalnihZnakov()">Dodaj meritve vitalnih znakov</button><span id="dodajMeritveVitalnihZnakovSporocilo"></span>
+    				  	</div>
+    				</div>
+    			</div>
+            
+    
+    </div>
+</div>
 
-		</div>
   <!-- KONEC: Vsebina aplikacije -->
+<script id="timeline-entry" type="text/x-handlebars-template">
+    <li class="timeline-item">
+        <time class="timeline-date" datetime="{{datetime}}">
+            <span>{{date_complete}}</span>
+            <span>{{date_principal}}</span>
+        </time>
+        <div class="timeline-icon {{icon}}"></div>
+        <div class="timeline-label">
+            <div class="timeline-title collapsed">
+                <h3>{{title}} | {{composer}}</h3>
+            </div>
+            <div class="timeline-content">
+                {{{content}}}
+            </div>
+        </div>
+    </li>
+</script>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+<script src="js/morris.min.js"></script>
+<script src="js/app.js"></script>
+<script src="js/handlebars-v1.3.0.js"></script>
+<script src="js/timeline.js"></script>
 
 </body>
 </html>
