@@ -167,15 +167,38 @@ function izracunajBMI() {
 					    		var bmi = res[0].weight/(visina*0.01*visina*0.01);
 					    		bmi = Math.round(bmi*100)/100;
 					    		if(bmi>18.5 && bmi<25){
-						    		$('#rezultatBMI').html('<br/><span><b>Vaš BMI je </b>'+bmi+'</span><br/><br/><br/><span>Vaš BMI je <b>normalen.</b></span><br/><span>Primer kosila, s katerim boste vzdrževali vašo telesno maso.</span><br/><br/><a href="http://okusno.je/recept/tunine-polpete"><img src="61475879.jpg" style="max-width:100%; max-height:100%; margin-top:10px;"></img></a>');
+						    		$('#rezultatBMI').html('<br/><span><b>Vaš BMI je </b>'+bmi+'</span><br/><br/><br/><span>Vaš BMI je <b>normalen.</b></span>'+
+						    		'<br/><span>Predlagan je recept, s katerim boste vzdrževali vašo telesno maso</span>'+
+						    		'<br/><br/><a href="http://okusno.je/recept/tunine-polpete"><img src="61475879.jpg" style="max-width:100%; max-height:100%; margin-top:10px;"></img></a><hr>'+
+						    		'<br><span>Predlagane pa so tudi vaje s katerimi boste ohranjali zdravo telo in srce. </span>'+
+						    		'<br><br><iframe style="margin:5px" align:"top" src="https://www.youtube.com/embed/qWy_aOlB45Y" frameborder="0" allowfullscreen></iframe>');
+						    	/*	var link = "https://www.youtube.com/watch?v=X1TuhAn6C-g"
+									var iframe = document.createElement('iframe');
+									iframe.frameBorder=0;
+									iframe.width="300px";
+									iframe.height="250px";
+									iframe.id="randomid";
+									iframe.setAttribute("src", link);
+									document.getElementById("rezultatBMI").appendChild(iframe);*/
+
 					    		}
 					    		else if(bmi < 18.5){
-					    				$('#rezultatBMI').html('<br/><span><b>Vaš BMI je </b>'+bmi+'</span><br/><br/><br/><span>Vaš BMI je <b>prenizek!</b></span><br/><span>Primer kosila, s katerim boste povečali vašo telesno maso.</span><br/><br/><a href="http://okusno.je/recept/rizota-z-gobami"><img src="61649198.jpg" style="max-width:100%; max-height:100%; margin-top:10px;"></img></a>');
+					    				$('#rezultatBMI').html('<br/><span><b>Vaš BMI je </b>'+bmi+'</span>'+
+					    				'<br/><br/><br/><span>Vaš BMI je <b>prenizek!</b></span>'+
+					    				'<br/><span>Predlagan recept, s katerim boste povečali vašo telesno maso: </span>'+
+					    				'<br/><br/><a href="http://okusno.je/recept/rizota-z-gobami"><img src="61649198.jpg" style="max-width:100%; max-height:100%; margin-top:10px;"></img></a><hr>'+
+						    			'<br><span>Predlagane pa so tudi vaje s katerimi boste pridobili kondicijo, ter okrepili telo. </span>'+
+						    			'<br><br><iframe style="margin:5px" align:"top" src="https://www.youtube.com/embed/R0mMyV5OtcM" frameborder="0" allowfullscreen></iframe>');
 					    		}
 					    		else if(bmi > 25){
-					    				$('#rezultatBMI').html('<br/><span><b>Vaš BMI je </b>'+bmi+'</span><br/><br/><br/><span>Vaš BMI je <b>previsok!</b></span><br/><span>Primer kosila, s katerim boste znižali vašo telesno maso.</span><br/><br/><a href="http://okusno.je/recept/solata-s-prekajenim-lososom"><img src="60686036.jpg" style="max-width:100%; max-height:100%; margin-top:10px;"></img></a>');
+					    				$('#rezultatBMI').html('<br/><span><b>Vaš BMI je </b>'+bmi+'</span>'+
+					    				'<br/><br/><br/><span>Vaš BMI je <b>previsok!</b></span>'+
+					    				'<br/><span>Predlagan recept, s katerim boste znižali vašo telesno maso:</span>'+
+					    				'<br/><br/><a href="http://okusno.je/recept/solata-s-prekajenim-lososom"><img src="60686036.jpg" style="max-width:100%; max-height:100%; margin-top:10px;"></img></a><hr>'+
+						    			'<br><span>Predlagane pa so tudi vaje s katerimi boste lažje izgubili težo. </span>'+
+						    			'<br><br><iframe style="margin:5px" align:"top" src="https://www.youtube.com/embed/X1TuhAn6C-g" frameborder="0" allowfullscreen></iframe>');
 					    		}
-					    			
+					    	//	$('#rezultatBMI').html('<br><iframe class="video" src="https://www.youtube.com/watch?v=X1TuhAn6C-g" allowfullscreen></iframe><br>');	
 					    		} else {
 					    		$("#BMISporocilo").html(
                     "<span class='obvestilo label label-warning fade-in'>" +
