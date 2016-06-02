@@ -72,8 +72,183 @@ function gumbTezaEhr(){
     }
 }
 
-//"izpiši za ta datum" prikaže podatke za ta datum
+function preberiEHRodBolnika() {
+	sessionId = getSessionId();
 
+	var ehrId = $("#preberiEHRid").val();
+
+	if (!ehrId || ehrId.trim().length == 0) {
+		$("#preberiSporocilo").html("<span class='obvestilo label label-warning " +
+      "fade-in'>Prosim vnesite zahtevan podatek!");
+	} else {
+		$.ajax({
+			url: baseUrl + "/demographics/ehr/" + ehrId + "/party",
+			type: 'GET',
+			headers: {"Ehr-Session": sessionId},
+	    	success: function (data) {
+	    		var party = data.party;
+	    		$('#kreirajIme').val(party.firstNames);
+	    		$('#kreirajPriimek').val(party.lastNames);
+	    		$('#kreirajDatumRojstva').val(party.dateOfBirth);
+				var party = data.party;
+				
+			},
+			error: function(err) {
+				$("#preberiSporocilo").html("<span class='obvestilo label " +
+          "label-danger fade-in'>Napaka '" +
+          JSON.parse(err.responseText).userMessage + "'!");
+			}
+		});
+	}
+}
+
+
+var visina;
+//izračunaj BMI in dodaj zunanji link
+function izracunajBMI() {
+	sessionId = getSessionId();
+    $("#BMISporocilo").html("");
+	var ehrId = $("#meritveBMIEHRid").val();
+	//$("#rezultatBMI").html("<br/><span>"+ehrId+"</span><br/><br/>");
+	if (!ehrId || ehrId.trim().length == 0) {
+		$("#BMISporocilo").html("<span class='obvestilo " +
+      "label label-warning fade-in'>Prosim vnesite zahtevan podatek!");
+	} else {
+		$.ajax({
+			url: baseUrl + "/demographics/ehr/" + ehrId + "/party",
+	    	type: 'GET',
+	    	headers: {"Ehr-Session": sessionId},
+	    	success: function (data) {
+				var party = data.party;
+				
+
+					$.ajax({
+  					    url: baseUrl + "/view/" + ehrId + "/" + "height",
+					    type: 'GET',
+					    headers: {"Ehr-Session": sessionId},
+					    success: function (res) {
+					    	if (res.length > 0) {
+					    	
+						    	visina = res[0].height;
+					    	} else {
+					    		$("#BMISporocilo").html(
+                    "<span class='obvestilo label label-warning fade-in'>" +
+                    "Ni podatkov!</span>");
+					    	}
+					    },
+					    error: function() {
+					    	$("#BMISporocilo").html(
+                  "<span class='obvestilo label label-danger fade-in'>Napaka '" +
+                  JSON.parse(err.responseText).userMessage + "'!");
+					    }
+					});
+				
+	    	},
+	    	error: function(err) {
+	    		$("#BMISporocilo").html(
+            "<span class='obvestilo label label-danger fade-in'>Napaka '" +
+            JSON.parse(err.responseText).userMessage + "'!");
+	    	}
+		});
+		$.ajax({
+			url: baseUrl + "/demographics/ehr/" + ehrId + "/party",
+	    	type: 'GET',
+	    	headers: {"Ehr-Session": sessionId},
+	    	success: function (data) {
+				var party = data.party;
+				
+
+					$.ajax({
+  					    url: baseUrl + "/view/" + ehrId + "/" + "weight",
+					    type: 'GET',
+					    headers: {"Ehr-Session": sessionId},
+					    success: function (res) {
+					    	if (res.length > 0) {
+					    		var bmi = res[0].weight/(visina*0.01*visina*0.01);
+					    		bmi = Math.round(bmi*100)/100;
+					    		if(bmi>18.5 && bmi<25){
+						    		$('#rezultatBMI').html('<br/><span><b>Vaš BMI je </b>'+bmi+'</span><br/><br/><br/><span>Vaš BMI je <b>normalen.</b></span><br/><span>Primer kosila, s katerim boste vzdrževali vašo telesno maso.</span><br/><br/><a href="http://okusno.je/recept/tunine-polpete"><img src="61475879.jpg" style="max-width:100%; max-height:100%; margin-top:10px;"></img></a>');
+					    		}
+					    		else if(bmi < 18.5){
+					    				$('#rezultatBMI').html('<br/><span><b>Vaš BMI je </b>'+bmi+'</span><br/><br/><br/><span>Vaš BMI je <b>prenizek!</b></span><br/><span>Primer kosila, s katerim boste povečali vašo telesno maso.</span><br/><br/><a href="http://okusno.je/recept/rizota-z-gobami"><img src="61649198.jpg" style="max-width:100%; max-height:100%; margin-top:10px;"></img></a>');
+					    		}
+					    		else if(bmi > 25){
+					    				$('#rezultatBMI').html('<br/><span><b>Vaš BMI je </b>'+bmi+'</span><br/><br/><br/><span>Vaš BMI je <b>previsok!</b></span><br/><span>Primer kosila, s katerim boste znižali vašo telesno maso.</span><br/><br/><a href="http://okusno.je/recept/solata-s-prekajenim-lososom"><img src="60686036.jpg" style="max-width:100%; max-height:100%; margin-top:10px;"></img></a>');
+					    		}
+					    			
+					    		} else {
+					    		$("#BMISporocilo").html(
+                    "<span class='obvestilo label label-warning fade-in'>" +
+                    "Ni podatkov!</span>");
+					    	}
+					    },
+					    error: function() {
+					    	$("#BMISporocilo").html(
+                  "<span class='obvestilo label label-danger fade-in'>Napaka '" +
+                  JSON.parse(err.responseText).userMessage + "'!");
+					    }
+					});
+				
+	    	},
+	    	error: function(err) {
+	    		$("#BMISporocilo").html(
+            "<span class='obvestilo label label-danger fade-in'>Napaka '" +
+            JSON.parse(err.responseText).userMessage + "'!");
+	    	}
+		});
+	}
+}
+/*
+function izracunajBMI(){
+
+	sessionId = getSessionId();
+    $("#BMISporocilo").html("");
+	var ehrId = $("#meritveBMIEHRid").val();
+
+	if (!ehrId || ehrId.trim().length == 0 || !tip || tip.trim().length == 0) {
+		$("#BMISporocilo").html("<span class='obvestilo " +
+      "label label-warning fade-in'>Prosim vnesite zahtevan podatek!");
+	} else {
+		$.ajax({
+			url: baseUrl + "/demographics/ehr/" + ehrId + "/party",
+	    	type: 'GET',
+	    	headers: {"Ehr-Session": sessionId},
+	    	success: function (data) {
+				var party = data.party;
+					$.ajax({
+					    url: baseUrl + "/view/" + ehrId + "/" + "weight",
+					    type: 'GET',
+					    headers: {"Ehr-Session": sessionId},
+					    success: function (res) {
+					    	if (res.length > 0) {
+						    	var zadnjaTeza = res[0].weight;
+						        $('#rezultatBMI').html("<br/><span>Vaša teža je "+zadnjaTeza+"kg</span><br/><br/>");
+						        $("#BMISporocilo").html("<span class='obvestilo label label-warning fade-in'>" +"Uspešno!</span>");
+					    	} else {
+					    		$("#BMISporocilo").html(
+                    "<span class='obvestilo label label-warning fade-in'>" +
+                    "Ni podatkov!</span>");
+					    	}
+					    },
+					    error: function() {
+					    	$("#BMISporocilo").html(
+                  "<span class='obvestilo label label-danger fade-in'>Napaka '" +
+                  JSON.parse(err.responseText).userMessage + "'!");
+					    }
+					});
+				
+	    	},
+	    	error: function(err) {
+	    		$("#BMISporocilo").html(
+            "<span class='obvestilo label label-danger fade-in'>Napaka '" +
+            JSON.parse(err.responseText).userMessage + "'!");
+	    	}
+		});
+	}
+}*/
+
+
+//"izpiši za ta datum" prikaže podatke za ta datum
 function izpisiGledeNaCas(){
     sessionId = getSessionId();
     $("#preberiMeritveTezeSporocilo").html("");
@@ -489,7 +664,7 @@ function generirajPodatke(stPacienta) {
         
         if(stPacienta == 1){
             oseba=["Regina","Phalange","1983-10-26T15:38"];
-            podatki=[["2015-11-11T11:44Z",170,60,36,180,110],["2015-11-12T11:44Z",170,59,36,110,75],["2015-11-13T11:44Z",170,61,36,90,40]];
+            podatki=[["2015-11-11T11:44Z",170,52,36,180,110],["2015-11-12T11:44Z",170,52,36,110,75],["2015-11-13T11:44Z",170,52,36,90,40]];
            
         }
         else if(stPacienta == 2){

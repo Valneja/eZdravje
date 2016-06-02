@@ -11,12 +11,13 @@
   <script src="knjiznice/js/jquery-2.2.3.min.js"></script>
   <script src="knjiznice/js/bootstrap.min.js"></script>
   <script src="knjiznice/js/koda.js"></script>
+  <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
  
       <!-- Loading Styles -->
     <link href="bootflat/css/bootflat.css" rel="stylesheet">
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet" type="text/css">
     <link href="css/font-awesome.css" rel="stylesheet">
-
+    
     <link href="css/morris.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
   <style>
@@ -38,7 +39,7 @@
           <span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
         </button>
         <!-- ZAČETEK: Ime vaše aplikacije -->
-        <a class="navbar-brand" href="index.html">{ime vaše aplikacije}</a>
+        <a class="navbar-brand" href="index.html">Vitalko</a>
         <!-- KONEC: Ime vaše aplikacije -->
       </div>
       <div class="collapse navbar-collapse" id="menujska-vrstica">
@@ -65,7 +66,7 @@
 						<div class="col-lg-8 col-md-8 col-sm-8">
 					    <select class="form-control input-sm" id="preberiPredlogoBolnika">
 						    <option value=""></option>
-						    <option value="Regina,Phalange,1983-10-26T15:38,2fc058e2-fa7b-4076-a863-4463d01ea108">Regina Phalange</option>
+						    <option value="Regina,Phalange,1983-10-26T15:38,12161b35-c4b8-4518-9c82-42f3383c4006">Regina Phalange</option>
 					      <option value="Ken,Adams,1982-2-6T11:10,7ccf074a-4341-477a-ab94-2110b121272b">Ken Adams</option>
 					      <option value="Chanandler,Bong,1981-11-21T16:44,be734d9f-eba7-4da1-b7ea-ade286fee911">Chanandler Bong</option>
 				      </select>
@@ -79,7 +80,7 @@
 				  </div>
 			     <div class="row"  style="margin: 20px;">
 					 <div class="col-lg-4 col-md-4 col-sm-4">
-			        <button type="button" class="btn btn-success  btn-s" style="margin: 1px;">Prikaži podatke</button><span id="kreirajSporocilo"></span>
+			        <button type="button" onclick="preberiEHRodBolnika()" class="btn btn-success  btn-s" style="margin: 1px;">Prikaži podatke</button><span id="kreirajSporocilo"></span>
 			     </div>
 			     </div>
 					</div>
@@ -201,8 +202,8 @@
     				  	</div>
     				</div>
     			</div>
-    			<div class="col-lg-6 col-md-6 col-sm-6">
-				<div class="panel panel-success">
+		    <div class="col-lg-6 col-md-6 col-sm-6">
+		    	<div class="panel panel-success">
 					<div class="panel-heading">
 						<div class="row">
 							<div class="col-lg-6 col-md-6 col-sm-6"><b>Pregled</b> meritev <b>vitalnih znakov</b> bolnika</div>
@@ -214,16 +215,27 @@
 						<button type="button" class="btn btn-success btn-s" onclick="preberiMeritveVitalnihZnakov()">Preberi meritve vitalnih znakov</button><span id="preberiMeritveVitalnihZnakovSporocilo"></span>
 						<div id="rezultatMeritveVitalnihZnakov"></div>
 				  	</div>
+    			</div>
+			</div>
+			<div class="col-lg-6 col-md-6 col-sm-6">
+				<div class="panel panel-success">
+					<div class="panel-heading">
+						<div class="row">
+							<div class="col-lg-6 col-md-6 col-sm-6">Izberi recept glede na BMI</div>
+						</div>
+					</div>
+					<div class="panel-body">
+						<span class="label label-default">EHR ID</span><input id="meritveBMIEHRid" type="text" class="form-control input-mini" placeholder="7b661e12-3a98-21ad-c29e-2dc9f5a3d885">
+						<button type="button" class="btn btn-success btn-s" onclick="izracunajBMI()">Izračunaj moj BMI</button><span id="BMISporocilo"></span>
+						<div id="rezultatBMI">
+						   <!-- <img src="61649198.jpg" style="max-width:100%; max-height:100%; margin-top:10px;"></img>-->
+						</div>
+				  	</div>
 				</div>
+				
 			</div>
     </div>
-    <div class="col-lg-9 col-md-9 col-sm-9">
-        <ul class="nav nav-tabs">
-          <li role="presentation" class="active"><a href="#">Home</a></li>
-          <li role="presentation"><a href="#">Profile</a></li>
-          <li role="presentation"><a href="#">Messages</a></li>
-        </ul>
-    </div>
+   
 </div>
 
   <!-- KONEC: Vsebina aplikacije -->
