@@ -12,14 +12,9 @@
   <script src="knjiznice/js/bootstrap.min.js"></script>
   <script src="knjiznice/js/koda.js"></script>
   <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
- 
-      <!-- Loading Styles -->
-    <link href="bootflat/css/bootflat.css" rel="stylesheet">
-    <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet" type="text/css">
-    <link href="css/font-awesome.css" rel="stylesheet">
-    
-    <link href="css/morris.css" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet">
+  <script src="https://code.highcharts.com/highcharts.js"></script>
+  <script src="https://code.highcharts.com/modules/exporting.js"></script>
+
   <style>
 			body {padding: 20px;}
 			.btn {margin-top: 10px;}
@@ -106,9 +101,26 @@
                 </div>
             </div>
             
-            <div class="patient-stats well" style="position: relative">
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+        				<div class="panel panel-success">
+        					<div class="panel-heading">
+        						<div class="row">
+        							<div class="col-lg-6 col-md-6 col-sm-6"><h>Graf telesne teže</h></div>
+        							<div class="col-lg-3 col-md-3 col-sm-3"></div>
+        							<div class="col-lg-3 col-md-3 col-sm-3" >
+        							    <button type="button" class="btn btn-success btn-s" onclick="prikaziGrafe()">Prikaži graf</button><span id="grafSporocilo"></span>
+        							</div>
+        						</div>
+        					</div>
+        					<div class="panel-body" style="overflow: auto">
+        						<div id="graff" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+        				  	</div>
+        				</div>
+        		    </div>
+                </div>
           
-    		
+            <div class="patient-stats well" style="position: relative">
                 <div class="row">
                     <span class="label label-default">EHR ID</span><input id="casMeritveEhr" type="text" class="form-control input-mini" placeholder="7b661e12-3a98-21ad-c29e-2dc9f5a3d885">
                     <button type="button" class="btn btn-success btn-s" onclick="gumbTezaEhr()">Preberi meritve teže</button><span id="preberiMeritveTezeSporocilo"></span>
@@ -175,12 +187,10 @@
                         <hr>
                         
                     </div>
-                    
                 </div>
             </div>
-            
-            
         </div>
+          
       
             <div class="col-lg-6 col-md-6 col-sm-6">
     				<div class="panel panel-default">
@@ -240,15 +250,6 @@
 
   <!-- KONEC: Vsebina aplikacije -->
 
-
-<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
-<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
-<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
-<script src="js/morris.min.js"></script>
-<script src="js/app.js"></script>
-<script src="js/handlebars-v1.3.0.js"></script>
-<script src="js/timeline.js"></script>
 
 </body>
 </html>

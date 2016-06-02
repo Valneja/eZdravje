@@ -443,6 +443,105 @@ function izpisiGledeNaCas(){
     }
 }
 
+function prikaziGrafe(){
+	
+	
+	
+	sessionId = getSessionId();
+    $("#grafSporocilo").html("");
+	var ehrId = $('#preberiEHRid').val();
+
+		if (!ehrId || ehrId.trim().length == 0) {
+		$("#grafSporocilo").html("<span class='obvestilo " +
+      "label label-warning fade-in'>Prosim vnesite zahtevan podatek!");
+	} else {
+		$.ajax({
+			url: baseUrl + "/demographics/ehr/" + ehrId + "/party",
+	    	type: 'GET',
+	    	headers: {"Ehr-Session": sessionId},
+	    	success: function (data) {
+				var party = data.party;
+
+					$.ajax({
+  					    url: baseUrl + "/view/" + ehrId + "/" + "weight",
+					    type: 'GET',
+					    headers: {"Ehr-Session": sessionId},
+					    success: function (res) {
+					    	if (res.length > 0) {
+								//var tabelaTez =['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun','Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+						        var tabelaTez=[];
+						        var tabelaCasov=[];
+						        var tabelaCasov2=[];
+						        for (var i in res) {
+						        	tabelaTez[i]=res[i].weight;
+						        	tabelaCasov[i]=res[i].time.substring(0,10);
+						        	
+						        }
+						      
+						        $(function () {
+							    $('#graff').highcharts({
+							        title: {
+							            text: 'teza',
+							            x: -20 //center
+							        },
+							        subtitle: {
+							            text: 'cas',
+							            x: -20
+							        },
+							        xAxis: {
+							            categories: tabelaCasov
+							        },
+							        yAxis: {
+							            title: {
+							                text: 'Teza(kg)'
+							            },
+							            plotLines: [{
+							                value: 0,
+							                width: 1,
+							                color: '#808080'
+							            }]
+							        },
+							        tooltip: {
+							            valueSuffix: 'kg'
+							        },
+							        legend: {
+							            layout: 'vertical',
+							            align: 'right',
+							            verticalAlign: 'middle',
+							            borderWidth: 0
+							        },
+							        series: [{
+							           
+							            name: 'teza',
+							            data: tabelaTez
+							      
+							        }]
+							    });
+							});
+								
+					    	} else {
+					    		$("#grafSporocilo").html(
+                    "<span class='obvestilo label label-warning fade-in'>" +
+                    "Ni podatkov!</span>");
+					    	}
+					    },
+					    error: function() {
+					    	$("#grafSporocilo").html(
+                  "<span class='obvestilo label label-danger fade-in'>Napaka '" +
+                  JSON.parse(err.responseText).userMessage + "'!");
+					    }
+					});
+			
+	    	},
+	    	error: function(err) {
+	    		$("#grafSporocilo").html(
+            "<span class='obvestilo label label-danger fade-in'>Napaka '" +
+            JSON.parse(err.responseText).userMessage + "'!");
+	    	}
+		});
+	}
+}
+
 //prebere temperaturo ali težo za določen EHR
 
 function preberiMeritveVitalnihZnakov() {
