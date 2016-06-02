@@ -11,7 +11,7 @@
   <script src="knjiznice/js/jquery-2.2.3.min.js"></script>
   <script src="knjiznice/js/bootstrap.min.js"></script>
   <script src="knjiznice/js/koda.js"></script>
-  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places"></script>
+ 
       <!-- Loading Styles -->
     <link href="bootflat/css/bootflat.css" rel="stylesheet">
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet" type="text/css">
@@ -45,7 +45,7 @@
         <ul class="nav navbar-nav">
           <li><a href="opis.html">Opis ideje</a></li>
           <li><a href="nacrt.html">Načrt informacijske rešitve</a></li>
-          <li><a href="#" onclick="kreirajEHRzaBolnika()">Generiranje podatkov</a></li>
+          <li><a href="#" onclick="generiraj()">Generiranje podatkov</a></li>
         </ul>
       </div>
     </div>
@@ -65,9 +65,9 @@
 						<div class="col-lg-8 col-md-8 col-sm-8">
 					    <select class="form-control input-sm" id="preberiPredlogoBolnika">
 						    <option value=""></option>
-						    <option value="Regina,Phalange,1983-10-26T15:38,3694667a-4809-4cbe-b90a-7b9bc7912df6">Regina Phalange</option>
-					      <option value="Ken,Adams,1982-2-6T11:10,2cea2893-0baa-4b06-8c45-0a994995e808">Ken Adams</option>
-					      <option value="Chanandler,Bong,1981-11-21T16:44,a0dd531b-4502-48a1-a8cc-1f4274196faa">Chanandler Bong</option>
+						    <option value="Regina,Phalange,1983-10-26T15:38,2fc058e2-fa7b-4076-a863-4463d01ea108">Regina Phalange</option>
+					      <option value="Ken,Adams,1982-2-6T11:10,7ccf074a-4341-477a-ab94-2110b121272b">Ken Adams</option>
+					      <option value="Chanandler,Bong,1981-11-21T16:44,be734d9f-eba7-4da1-b7ea-ade286fee911">Chanandler Bong</option>
 				      </select>
 			      </div>
 			     </div>
@@ -106,22 +106,42 @@
             </div>
             
             <div class="patient-stats well" style="position: relative">
+          
+    		
+                <div class="row">
+                    <span class="label label-default">EHR ID</span><input id="casMeritveEhr" type="text" class="form-control input-mini" placeholder="7b661e12-3a98-21ad-c29e-2dc9f5a3d885">
+                    <button type="button" class="btn btn-success btn-s" onclick="gumbTezaEhr()">Preberi meritve teže</button><span id="preberiMeritveTezeSporocilo"></span>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="centered bordered">
+                        <div class="col-lg-4 col-md-4 col-sm-4"><b>Izberi čas meritve</b></div>
+    					    <div class="col-lg-8 col-md-8 col-sm-8">
+    				        <select class="form-control input-sm" id="preberiCasMeritve" style="margin-bottom: 10px">
+    				            <option value=""></option>
+    			            </select>
+    			            
+    			        </div>
+    			        
+    			        <hr>
+                    </div>
+                    <button type="button" class="btn btn-success btn-s" onclick="izpisiGledeNaCas()">Izpiši za ta datum</button><span id="casSporocilo"></span>
+                </div>
+                
+                <hr>
                 <div class="row">
                     <div class="col-md-8 bordered">
                         <div class="row" style="min-height: 57px;">
-                            <div class="col-md-4 bordered centered" style="min-height: 67px;">
-                                <p>Age:</p>
-                                <div class="value patient-age-years"></div>
-                            </div>
+                            
                             <div class="col-md-4 bordered centered" style="min-height: 67px;">
                                 <p>Weight:</p>
-                                <div class="value">
-                                    <span class="weight-placeholder-value"></span> <span class="weight-placeholder-unit"></span>
+                                <div class="value"  id="tezaCas">
+                                    
                                 </div>
                             </div>
                             <div class="col-md-4 centered">
-                                <p>BMI:</p>
-                                <div class="value patient-bmi"></div>
+                                <p>Height:</p>
+                                <div class="value patient-bmi" id="visinaCas"></div>
                             </div>
                         </div>
                         <hr>
@@ -132,46 +152,29 @@
                                             <p>Blood Pressure:</p>
                                             <div class="value last-bp"></div>
                                     </div>
-                                    <div class="col-md-4 centered">
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12 centered">
+                                        <div class="value" id="sistolicniCas"></div>
                                         <div class="progress">
-                                            <div class="progress-bar" style="width: 40%;"></div>
+                                            <div class="progress-bar"  id="sistolicniGraf" role="progress" style="width: 40%;">(Systolic)</div>
                                         </div>
-                                        <p>(Systolic)</p>
+                                      
                                     </div>
-                                    <div class="col-md-4 centered">
+                                    <div class="col-md-12 centered">
+                                         <div class="value" id="diastolicniCas"></div>
                                         <div class="progress">
-                                            <div class="progress-bar" style="width: 50%;"></div>
+                                           <div class="progress-bar"  id="diastolicniGraf" role="progress" style="width: 90%;">(Diastolic)</div>
                                         </div>
-                                        <p>(Diastolic)</p>
+                                       
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <hr>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="row">
-                                    <div class="col-md-4">
-                                            <p>Oxygen Saturation:</p>
-                                            <div class="value last-spo2"></div>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <div class="progress">
-                                            <div class="progress-bar progress-bar-success bar-spo2"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        
                     </div>
-                    <div class="col-md-4">
-                            <div class="patient-height-stats">
-                                <p>Height:</p>
-                                <div class="value">
-                                    <span class="height-placeholder-value"></span> <span class="height-placeholder-unit"></span>
-                                </div>
-                            </div>
-                    </div>
+                    
                 </div>
             </div>
             
@@ -183,7 +186,7 @@
     					<div class="panel-heading">
     						<div class="row">
     							<div class="col-lg-8 col-md-8 col-sm-8"><b>Vnos</b> meritve <b>vitalnih znakov</b> bolnika</div>
-    							<div class="col-lg-4 col-md-4 col-sm-4"><select class="form-control input-sm" id="preberiObstojeciVitalniZnak"><option value=""></option><option value="b931580f-2b05-488b-985b-8d9ffb08ad02|2014-11-21T11:40Z|185|80.0|36.50|118|92|98|medicinska sestra Smrketa">Ata Smrk</option></select></div>
+    							<div class="col-lg-4 col-md-4 col-sm-4"><select class="form-control input-sm" id="preberiObstojeciVitalniZnak"><option value=""></option><option value="b931580f-2b05-488b-985b-8d9ffb08ad02|2014-11-21T11:40Z|185|80.0|36.50|118|92|98|medicinska sestra Smrketa">Primer uporabe</option></select></div>
     						</div>
     					</div>
     					<div class="panel-body">
@@ -198,29 +201,33 @@
     				  	</div>
     				</div>
     			</div>
-            
-    
+    			<div class="col-lg-6 col-md-6 col-sm-6">
+				<div class="panel panel-success">
+					<div class="panel-heading">
+						<div class="row">
+							<div class="col-lg-6 col-md-6 col-sm-6"><b>Pregled</b> meritev <b>vitalnih znakov</b> bolnika</div>
+							<div class="col-lg-6 col-md-6 col-sm-6"><select class="form-control input-md" id="preberiTipZaVitalneZnake"><option value="telesna temperatura">telesna temperatura</option><option value="telesna teža">telesna teža</option></select></div>
+						</div>
+					</div>
+					<div class="panel-body">
+						<span class="label label-default">EHR ID</span><input id="meritveVitalnihZnakovEHRid" type="text" class="form-control input-mini" placeholder="7b661e12-3a98-21ad-c29e-2dc9f5a3d885">
+						<button type="button" class="btn btn-success btn-s" onclick="preberiMeritveVitalnihZnakov()">Preberi meritve vitalnih znakov</button><span id="preberiMeritveVitalnihZnakovSporocilo"></span>
+						<div id="rezultatMeritveVitalnihZnakov"></div>
+				  	</div>
+				</div>
+			</div>
+    </div>
+    <div class="col-lg-9 col-md-9 col-sm-9">
+        <ul class="nav nav-tabs">
+          <li role="presentation" class="active"><a href="#">Home</a></li>
+          <li role="presentation"><a href="#">Profile</a></li>
+          <li role="presentation"><a href="#">Messages</a></li>
+        </ul>
     </div>
 </div>
 
   <!-- KONEC: Vsebina aplikacije -->
-<script id="timeline-entry" type="text/x-handlebars-template">
-    <li class="timeline-item">
-        <time class="timeline-date" datetime="{{datetime}}">
-            <span>{{date_complete}}</span>
-            <span>{{date_principal}}</span>
-        </time>
-        <div class="timeline-icon {{icon}}"></div>
-        <div class="timeline-label">
-            <div class="timeline-title collapsed">
-                <h3>{{title}} | {{composer}}</h3>
-            </div>
-            <div class="timeline-content">
-                {{{content}}}
-            </div>
-        </div>
-    </li>
-</script>
+
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
