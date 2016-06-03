@@ -25,6 +25,7 @@ function getSessionId() {
 function gumbTezaEhr(){
     sessionId = getSessionId();
     $("#preberiMeritveTezeSporocilo").html("");
+    $("#povprecnaTezaRezultat").html("");
     var ehrId = $("#casMeritveEhr").val();
     document.getElementById("preberiCasMeritve").innerHTML = "";
     if (!ehrId || ehrId.trim().length == 0) {
@@ -172,14 +173,7 @@ function izracunajBMI() {
 						    		'<br/><br/><a href="http://okusno.je/recept/tunine-polpete"><img src="61475879.jpg" style="max-width:100%; max-height:100%; margin-top:10px;"></img></a><hr>'+
 						    		'<br><span>Predlagane pa so tudi vaje s katerimi boste ohranjali zdravo telo in srce. </span>'+
 						    		'<br><br><iframe style="margin:5px" align:"top" src="https://www.youtube.com/embed/qWy_aOlB45Y" frameborder="0" allowfullscreen></iframe>');
-						    	/*	var link = "https://www.youtube.com/watch?v=X1TuhAn6C-g"
-									var iframe = document.createElement('iframe');
-									iframe.frameBorder=0;
-									iframe.width="300px";
-									iframe.height="250px";
-									iframe.id="randomid";
-									iframe.setAttribute("src", link);
-									document.getElementById("rezultatBMI").appendChild(iframe);*/
+						
 
 					    		}
 					    		else if(bmi < 18.5){
@@ -198,7 +192,7 @@ function izracunajBMI() {
 						    			'<br><span>Predlagane pa so tudi vaje s katerimi boste lažje izgubili težo. </span>'+
 						    			'<br><br><iframe style="margin:5px" align:"top" src="https://www.youtube.com/embed/X1TuhAn6C-g" frameborder="0" allowfullscreen></iframe>');
 					    		}
-					    	//	$('#rezultatBMI').html('<br><iframe class="video" src="https://www.youtube.com/watch?v=X1TuhAn6C-g" allowfullscreen></iframe><br>');	
+					    	
 					    		} else {
 					    		$("#BMISporocilo").html(
                     "<span class='obvestilo label label-warning fade-in'>" +
@@ -221,15 +215,15 @@ function izracunajBMI() {
 		});
 	}
 }
-/*
-function izracunajBMI(){
 
+function povprecnaTeza(){
 	sessionId = getSessionId();
-    $("#BMISporocilo").html("");
-	var ehrId = $("#meritveBMIEHRid").val();
+    $("#tezaSporocilo").html("");
+	var ehrId = $('#casMeritveEhr').val();
+	
 
-	if (!ehrId || ehrId.trim().length == 0 || !tip || tip.trim().length == 0) {
-		$("#BMISporocilo").html("<span class='obvestilo " +
+		if (!ehrId || ehrId.trim().length == 0) {
+		$("#tezaSporocilo").html("<span class='obvestilo " +
       "label label-warning fade-in'>Prosim vnesite zahtevan podatek!");
 	} else {
 		$.ajax({
@@ -238,37 +232,45 @@ function izracunajBMI(){
 	    	headers: {"Ehr-Session": sessionId},
 	    	success: function (data) {
 				var party = data.party;
+
 					$.ajax({
-					    url: baseUrl + "/view/" + ehrId + "/" + "weight",
+  					    url: baseUrl + "/view/" + ehrId + "/" + "weight",
 					    type: 'GET',
 					    headers: {"Ehr-Session": sessionId},
 					    success: function (res) {
 					    	if (res.length > 0) {
-						    	var zadnjaTeza = res[0].weight;
-						        $('#rezultatBMI').html("<br/><span>Vaša teža je "+zadnjaTeza+"kg</span><br/><br/>");
-						        $("#BMISporocilo").html("<span class='obvestilo label label-warning fade-in'>" +"Uspešno!</span>");
+					    		var teza=0;
+					    		var stevec=0;
+								for(var i in res){
+									teza+=res[i].weight;
+									stevec++;
+								}
+								teza/=stevec;
+								teza=Math.round(teza*100)/100;
+								$("#povprecnaTezaRezultat").html(teza);
+								
 					    	} else {
-					    		$("#BMISporocilo").html(
+					    		$("#tezaSporocilo").html(
                     "<span class='obvestilo label label-warning fade-in'>" +
                     "Ni podatkov!</span>");
 					    	}
 					    },
 					    error: function() {
-					    	$("#BMISporocilo").html(
+					    	$("#tezaSporocilo").html(
                   "<span class='obvestilo label label-danger fade-in'>Napaka '" +
                   JSON.parse(err.responseText).userMessage + "'!");
 					    }
 					});
-				
+			
 	    	},
 	    	error: function(err) {
-	    		$("#BMISporocilo").html(
+	    		$("#tezaSporocilo").html(
             "<span class='obvestilo label label-danger fade-in'>Napaka '" +
             JSON.parse(err.responseText).userMessage + "'!");
 	    	}
 		});
 	}
-}*/
+}
 
 
 //"izpiši za ta datum" prikaže podatke za ta datum
@@ -378,17 +380,21 @@ function izpisiGledeNaCas(){
 						        for (var i in res) {
 					             //   $("#tezaCas").html("<span>" +res[i].weight+"</span>");
                                     if(res[i].time == $('#preberiCasMeritve').val()){
-                                        $("#sistolicniCas").html("<span>" +res[i].systolic+"</span>");
+                                       // $("#sistolicniCas").html("<span>" +res[i].systolic+"</span>");
+                                        $("#sprocenti").html(res[i].systolic);
                                         var procent = res[i].systolic/210*100;
                                         $("#sistolicniGraf").css("width", procent + "%");
                                         if(res[i].systolic <= 90){
                                              $("#sistolicniGraf").attr("class", "progress-bar progress-bar-success");
+                                             $("#opozoriloS").html("Vaš sistoličen krvni tlak je normalen.");
                                         }
                                         else if(res[i].systolic <= 130){
                                              $("#sistolicniGraf").attr("class", "progress-bar progress-bar-warning");
+                                              $("#opozoriloS").html("Vaš sistoličen krvni tlak je rahlo previsok.");
                                         }
                                         else if(res[i].systolic > 130){
                                              $("#sistolicniGraf").attr("class", "progress-bar progress-bar-danger");
+                                              $("#opozoriloS").html("Vaš sistoličen krvni tlak je <b>previsok</b>!");
                                         }
                                     }
 						        }
@@ -429,17 +435,22 @@ function izpisiGledeNaCas(){
 						        for (var i in res) {
 					             //   $("#tezaCas").html("<span>" +res[i].weight+"</span>");
                                     if(res[i].time == $('#preberiCasMeritve').val()){
-                                        $("#diastolicniCas").html("<span>" +res[i].diastolic+"</span>");
+                                       // $("#diastolicniCas").html("<span>" +res[i].diastolic+"</span>");
+                                       $("#dprocenti").html(res[i].diastolic);
+                                       
                                         var procent = res[i].diastolic/210*100;
                                         $("#diastolicniGraf").css("width", procent + "%");
                                         if(res[i].diastolic <= 60){
                                              $("#diastolicniGraf").attr("class", "progress-bar progress-bar-success");
+                                             $("#opozoriloD").html("Vaš diastoličen krvni tlak je normalen.");
                                         }
                                         else if(res[i].diastolic <= 85){
                                              $("#diastolicniGraf").attr("class", "progress-bar progress-bar-warning");
+                                              $("#opozoriloD").html("Vaš diastoličen krvni tlak je rahlo previsok.");
                                         }
                                         else if(res[i].systolic > 85){
                                              $("#diastolicniGraf").attr("class", "progress-bar progress-bar-danger");
+                                              $("#opozoriloD").html("Vaš diastoličen krvni tlak je <b>previsok</b>!");
                                         }
                                     }
 						        }
@@ -504,7 +515,7 @@ function prikaziGrafe(){
 						        $(function () {
 							    $('#graff').highcharts({
 							        title: {
-							            text: 'teza',
+							            text: 'Graf telesne teže',
 							            x: -20 //center
 							        },
 							        subtitle: {

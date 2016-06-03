@@ -101,24 +101,7 @@
                 </div>
             </div>
             
-                <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12">
-        				<div class="panel panel-success">
-        					<div class="panel-heading">
-        						<div class="row">
-        							<div class="col-lg-6 col-md-6 col-sm-6"><h>Graf telesne teže</h></div>
-        							<div class="col-lg-3 col-md-3 col-sm-3"></div>
-        							<div class="col-lg-3 col-md-3 col-sm-3" >
-        							    <button type="button" class="btn btn-success btn-s" onclick="prikaziGrafe()">Prikaži graf</button><span id="grafSporocilo"></span>
-        							</div>
-        						</div>
-        					</div>
-        					<div class="panel-body" style="overflow: auto">
-        						<div id="graff" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
-        				  	</div>
-        				</div>
-        		    </div>
-                </div>
+               
           
             <div class="patient-stats well" style="position: relative">
                 <div class="row">
@@ -143,19 +126,27 @@
                 
                 <hr>
                 <div class="row">
-                    <div class="col-md-8 bordered">
+                    <div class="col-md-12 bordered">
                         <div class="row" style="min-height: 57px;">
                             
-                            <div class="col-md-4 bordered centered" style="min-height: 67px;">
+                            <div class="col-md-3 bordered centered" style="min-height: 67px;">
                                 <p>Weight:</p>
                                 <div class="value"  id="tezaCas">
                                     
                                 </div>
                             </div>
-                            <div class="col-md-4 centered">
+                            <div class="col-md-3 centered">
                                 <p>Height:</p>
                                 <div class="value patient-bmi" id="visinaCas"></div>
                             </div>
+                            <div class="col-md-6 centered">
+                                <div >Vaša povprečna teža je:</div><div class= "col-md-4 centered bordered" id=povprecnaTezaRezultat></div><br>
+                            <div>
+                            <button type="button" class="btn btn-success btn-sx" onclick="povprecnaTeza()">Izračunaj</button><span id="tezaSporocilo"></span>
+                            </div>
+                            
+                            </div>
+                            
                         </div>
                         <hr>
                         <div class="row">
@@ -169,17 +160,19 @@
                                 <div class="row">
                                     <div class="col-md-12 centered">
                                         <div class="value" id="sistolicniCas"></div>
+                                        <span id=sprocenti></span>
                                         <div class="progress">
                                             <div class="progress-bar"  id="sistolicniGraf" role="progress" style="width: 40%;">(Systolic)</div>
                                         </div>
-                                      
+                                         <div id=opozoriloS></div>
                                     </div>
                                     <div class="col-md-12 centered">
                                          <div class="value" id="diastolicniCas"></div>
+                                         <span id="dprocenti"></span>
                                         <div class="progress">
                                            <div class="progress-bar"  id="diastolicniGraf" role="progress" style="width: 90%;">(Diastolic)</div>
                                         </div>
-                                       
+                                       <div id=opozoriloD></div>
                                     </div>
                                 </div>
                             </div>
@@ -189,6 +182,25 @@
                     </div>
                 </div>
             </div>
+             <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+        				<div class="panel panel-success">
+        					<div class="panel-heading">
+        						<div class="row">
+        							<div class="col-lg-6 col-md-6 col-sm-6"><h>Graf telesne teže</h> <br><span id="grafSporocilo"></span></div>
+        							<div class="col-lg-3 col-md-3 col-sm-3"></div>
+        							<div class="col-lg-3 col-md-3 col-sm-3" >
+        							    <button type="button" class="btn btn-success btn-s" onclick="prikaziGrafe()">Prikaži graf</button>
+        							   
+        							</div>
+        						</div>
+        					</div>
+        					<div class="panel-body" style="overflow: auto">
+        						<div id="graff" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+        				  	</div>
+        				</div>
+        		    </div>
+                </div>
         </div>
           
       
@@ -217,7 +229,7 @@
 					<div class="panel-heading">
 						<div class="row">
 							<div class="col-lg-6 col-md-6 col-sm-6"><b>Pregled</b> meritev <b>vitalnih znakov</b> bolnika</div>
-							<div class="col-lg-6 col-md-6 col-sm-6"><select class="form-control input-md" id="preberiTipZaVitalneZnake"><option value="telesna temperatura">telesna temperatura</option><option value="telesna teža">telesna teža</option></select></div>
+							<div class="col-lg-6 col-md-6 col-sm-6"><select class="form-control input-md" id="preberiTipZaVitalneZnake"><option value="telesna teža">telesna teža</option><option value="telesna temperatura">telesna temperatura</option></select></div>
 						</div>
 					</div>
 					<div class="panel-body">
