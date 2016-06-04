@@ -759,6 +759,10 @@ $(document).ready(function() {
     $("#kreirajPriimek").val(podatki[1]);
     $("#kreirajDatumRojstva").val(podatki[2]);
     $("#preberiEHRid").val(podatki[3]);
+    $("#dodajVitalnoEHR").val(podatki[3]);
+    $("#meritveVitalnihZnakovEHRid").val(podatki[3]);
+    $("#meritveBMIEHRid").val(podatki[3]);
+    $("#casMeritveEhr").val(podatki[3]);
   });
   
   $('#preberiObstojeciEHR').change(function() {
