@@ -311,14 +311,14 @@ function izpisiGledeNaCas(){
 					    	}
 					    },
 					    error: function() {
-					    	$("#preberiMeritveVitalnihZnakovSporocilo").html(
+					    	$("#preberiMeritveTezeSporocilo").html(
                   "<span class='obvestilo label label-danger fade-in'>Napaka '" +
                   JSON.parse(err.responseText).userMessage + "'!");
 					    }
 					});
 	    	},
 	    	error: function(err) {
-	    		$("#preberiMeritveVitalnihZnakovSporocilo").html(
+	    		$("#preberiMeritveTezeSporocilo").html(
             "<span class='obvestilo label label-danger fade-in'>Napaka '" +
             JSON.parse(err.responseText).userMessage + "'!");
 	    	}
@@ -351,14 +351,14 @@ function izpisiGledeNaCas(){
 					    	}
 					    },
 					    error: function() {
-					    	$("#preberiMeritveVitalnihZnakovSporocilo").html(
+					    	$("#preberiMeritveTezeSporocilo").html(
                   "<span class='obvestilo label label-danger fade-in'>Napaka '" +
                   JSON.parse(err.responseText).userMessage + "'!");
 					    }
 					});
 	    	},
 	    	error: function(err) {
-	    		$("#preberiMeritveVitalnihZnakovSporocilo").html(
+	    		$("#preberiMeritveTezeSporocilo").html(
             "<span class='obvestilo label label-danger fade-in'>Napaka '" +
             JSON.parse(err.responseText).userMessage + "'!");
 	    	}
@@ -406,14 +406,14 @@ function izpisiGledeNaCas(){
 					    	}
 					    },
 					    error: function() {
-					    	$("#preberiMeritveVitalnihZnakovSporocilo").html(
+					    	$("#preberiMeritveTezeSporocilo").html(
                   "<span class='obvestilo label label-danger fade-in'>Napaka '" +
                   JSON.parse(err.responseText).userMessage + "'!");
 					    }
 					});
 	    	},
 	    	error: function(err) {
-	    		$("#preberiMeritveVitalnihZnakovSporocilo").html(
+	    		$("#preberiMeritveTezeSporocilo").html(
             "<span class='obvestilo label label-danger fade-in'>Napaka '" +
             JSON.parse(err.responseText).userMessage + "'!");
 	    	}
@@ -462,14 +462,14 @@ function izpisiGledeNaCas(){
 					    	}
 					    },
 					    error: function() {
-					    	$("#preberiMeritveVitalnihZnakovSporocilo").html(
+					    	$("#preberiMeritveTezeSporocilo").html(
                   "<span class='obvestilo label label-danger fade-in'>Napaka '" +
                   JSON.parse(err.responseText).userMessage + "'!");
 					    }
 					});
 	    	},
 	    	error: function(err) {
-	    		$("#preberiMeritveVitalnihZnakovSporocilo").html(
+	    		$("#preberiMeritveTezeSporocilo").html(
             "<span class='obvestilo label label-danger fade-in'>Napaka '" +
             JSON.parse(err.responseText).userMessage + "'!");
 	    	}
